@@ -1,0 +1,42 @@
+mixed-port: 7890
+allow-lan: true
+mode: rule
+log-level: info
+external-controller: 0.0.0.0:9090
+
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  nameserver:
+    - 1.1.1.1
+    - 8.8.8.8
+    - 8.8.4.4
+  fallback:
+    - tls://1.1.1.1:853
+    - tls://8.8.8.8:853
+
+proxies:
+  - name: "Vmess-XL"
+    type: vmess
+    server: quiz.vidio.com
+    port: 443
+    uuid: b1afa4d4-bb6c-4ceb-87a5-0f05358c8118
+    alterId: 0
+    cipher: auto
+    tls: true
+    network: ws
+    ws-opts:
+      path: /vmess
+      headers:
+        Host: darkness.vip-premium.cloud
+    udp: true
+
+proxy-groups:
+  - name: "Proxy"
+    type: select
+    proxies:
+      - Vmess-XL
+      - DIRECT
+
+rules:
+  - MATCH,Proxy
